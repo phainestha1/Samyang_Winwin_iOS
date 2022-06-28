@@ -12,12 +12,12 @@ struct LaunchView: View {
     var isLoggedIn: Bool = false
     
     var body: some View {
-        if isLoggedIn {
+        switch isLoggedIn {
+        case true:
             MainView()
-        } else {
+        case false:
             LoginView()
         }
-
     }// body
 }// LaunchView
 
