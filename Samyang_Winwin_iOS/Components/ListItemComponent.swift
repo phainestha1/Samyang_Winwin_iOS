@@ -4,6 +4,7 @@
 //
 //  Created by Hyeon-sang Lee on 2022/06/28.
 //
+//  This file handles list items in the promotion page and the user market list.
 
 import SwiftUI
 
