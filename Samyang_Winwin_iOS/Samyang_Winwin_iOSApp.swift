@@ -11,7 +11,8 @@ import SwiftUI
 struct Samyang_Winwin_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LaunchView()
         }
     }
 }
+
