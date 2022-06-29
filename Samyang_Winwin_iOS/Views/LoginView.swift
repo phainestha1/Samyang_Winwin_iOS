@@ -12,6 +12,7 @@ struct LoginView: View {
     @State var userId: String = ""
     @State var password: String = ""
     @State var isSecure: Bool = true
+    @State var token: String? = UserDefaults.standard.string(forKey: "token")
     
     let loginManager: LoginManager = LoginManager()
     let tokenVerifier: TokenVerifier = TokenVerifier()
@@ -27,14 +28,16 @@ struct LoginView: View {
                     print("🔥🔥🔥")
                     let response = await loginManager.authUser(userId, password)
                     print(response ?? "User Authentication Failed")
+                    UserDefaults.standard.set(response?.token, forKey: "token")
                 }
             }
 
         }// VStack
         .onAppear {
             Task {
-                let token: String = ""
-                await tokenVerifier.tokenLogin(token)
+                if let token = token {
+                    await tokenVerifier.tokenLogin(token)
+                }
             }
         }
     }// body

@@ -10,7 +10,7 @@ import Foundation
 struct TokenVerifier {
     let token: String = ""
     let url: URL? = URL(string: "\(basicUrl)/user/token")
-            
+    
     func tokenLogin(_ token: String) async {
         if let url = url {
             var request = URLRequest(url: url)
@@ -18,11 +18,15 @@ struct TokenVerifier {
             
             do {
                 let (data, _) = try await URLSession.shared.data(for: request)
-                let decodedData = try JSONDecoder().decode(UserModel.self, from: data)
-
-                print("✅✅✅ Decoded Data: \(decodedData)")
+                
+                let apiDictionary = try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
+                
+                print("✅✅✅ Response: \(apiDictionary.allValues)")
+                
+                
             } catch {
-                return
+                print("✅✅✅ Token Login Failed: \(error)")
+                
             }
         }
     }// tokenLogin
