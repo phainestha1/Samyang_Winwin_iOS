@@ -14,6 +14,7 @@ struct LoginView: View {
     @State var isSecure: Bool = true
     
     let loginManager: LoginManager = LoginManager()
+    let tokenVerifier: TokenVerifier = TokenVerifier()
     
     var body: some View {
         VStack {
@@ -30,6 +31,12 @@ struct LoginView: View {
             }
 
         }// VStack
+        .onAppear {
+            Task {
+                let token: String = ""
+                await tokenVerifier.tokenLogin(token)
+            }
+        }
     }// body
 }// LoginView
 
