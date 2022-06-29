@@ -13,40 +13,54 @@ struct LoginView: View {
     @State var password: String = ""
     @State var isSecure: Bool = true
     @State var token: String? = UserDefaults.standard.string(forKey: "token")
+    @Binding var isLoggedIn: Bool
     
     let loginManager: LoginManager = LoginManager()
     let tokenVerifier: TokenVerifier = TokenVerifier()
     
     var body: some View {
-        VStack {
-            TextField("아이디", text: $userId)
-                .autocapitalization(.none)
-            SecureTextToggleComponent(password: $password, isSecure: $isSecure)
-
-            Button("로그인") {
+        NavigationView {
+            VStack {
+                TextField("아이디", text: $userId)
+                    .autocapitalization(.none)
+                SecureTextToggleComponent(password: $password, isSecure: $isSecure)
+                
+                Button("로그인") {
+                    Task {
+                        print("🔥🔥🔥")
+                        let response = await loginManager.authUser(userId, password)
+                        print(response ?? "User Authentication Failed")
+                        UserDefaults.standard.set(response?.token, forKey: "token")
+                    }
+                }
+                
+            }// VStack
+            .onAppear {
                 Task {
-                    print("🔥🔥🔥")
-                    let response = await loginManager.authUser(userId, password)
-                    print(response ?? "User Authentication Failed")
-                    UserDefaults.standard.set(response?.token, forKey: "token")
+                    guard let token = token else {
+                        print("Token does not exist.")
+                        return
+                    }
+                    
+                    if let _ = await tokenVerifier.tokenLogin(token) {
+                        self.isLoggedIn = true
+                    } else {
+                        print("Token exists, but verification process failed.")
+                    }
+                    
                 }
             }
-
-        }// VStack
-        .onAppear {
-            Task {
-                if let token = token {
-                    let response = await tokenVerifier.tokenLogin(token)
-                    print(response ?? "Token Login Failed")
-                }
-            }
-        }
+            
+        }// NavigationView
     }// body
 }// LoginView
 
 struct LoginView_Previews: PreviewProvider {
+    
+    @State static var value = false
+    
     static var previews: some View {
-        LoginView(userId: "winwin01", password: "123123123")
+        LoginView(userId: "winwin01", password: "123123123", isLoggedIn: $value)
     }
 }
 

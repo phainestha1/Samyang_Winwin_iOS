@@ -9,14 +9,14 @@ import SwiftUI
 
 struct LaunchView: View {
     
-    var isLoggedIn: Bool = false
+    @State var isLoggedIn: Bool = false
     
     var body: some View {
         switch isLoggedIn {
         case true:
             MainView()
         case false:
-            LoginView()
+            LoginView(isLoggedIn: $isLoggedIn)
         }
     }// body
 }// LaunchView

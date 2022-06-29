@@ -9,8 +9,18 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text("MainView")
-            .padding()
+        VStack {
+            Text("MainView")
+                .padding()
+
+
+            Button("Delete Token") {
+                let token: String? = UserDefaults.standard.string(forKey: "token")
+                UserDefaults.standard.removeObject(forKey: "token")
+                print(token ?? "NO TOKEN!!!")
+            }
+            
+        }// VStack
     }// body
 }// MainView
 
