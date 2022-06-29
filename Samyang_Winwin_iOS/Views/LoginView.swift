@@ -36,7 +36,8 @@ struct LoginView: View {
         .onAppear {
             Task {
                 if let token = token {
-                    await tokenVerifier.tokenLogin(token)
+                    let response = await tokenVerifier.tokenLogin(token)
+                    print(response ?? "Token Login Failed")
                 }
             }
         }
