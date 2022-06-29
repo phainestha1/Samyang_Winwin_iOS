@@ -9,7 +9,7 @@ import Foundation
 
 struct TokenVerifier {
     let token: String = ""
-    let url: URL? = URL(string: "\(basicUrl)/user/token")
+    let url: URL? = URL(string: "\(Constant.basicUrl)/user/token")
     
     func tokenLogin(_ token: String) async {
         if let url = url {

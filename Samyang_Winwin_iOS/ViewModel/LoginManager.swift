@@ -9,7 +9,7 @@
 import Foundation
 
 struct LoginManager {
-    let url: URL? = URL(string: "\(basicUrl)/user/login")
+    let url: URL? = URL(string: "\(Constant.basicUrl)/user/login")
 
     func authUser(_ userId: String, _ password: String) async -> UserModel? {
         let userInfo: LoginModel = LoginModel(userId: userId, password: password)

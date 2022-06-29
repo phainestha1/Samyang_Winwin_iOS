@@ -7,4 +7,6 @@
 
 import Foundation
 
-let basicUrl: String = "https://api.samyangfoods.site/api"
+struct Constant {
+    static let basicUrl: String = "https://api.samyangfoods.site/api"
+}
