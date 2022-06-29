@@ -11,6 +11,10 @@ struct LaunchView: View {
     
     @State var isLoggedIn: Bool = false
     
+    init() {
+        print("✅ isLoggedIn in LaunchView: \(isLoggedIn)")
+    }
+    
     var body: some View {
         switch isLoggedIn {
         case true:

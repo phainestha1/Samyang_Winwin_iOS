@@ -12,12 +12,12 @@ struct LoginView: View {
     @State var userId: String = ""
     @State var password: String = ""
     @State var isSecure: Bool = true
-    @State var token: String? = UserDefaults.standard.string(forKey: "token")
     @Binding var isLoggedIn: Bool
     
     let loginManager: LoginManager = LoginManager()
     let tokenVerifier: TokenVerifier = TokenVerifier()
-    
+    var token: String? = UserDefaults.standard.string(forKey: "token")
+        
     var body: some View {
         NavigationView {
             VStack {
@@ -27,15 +27,21 @@ struct LoginView: View {
                 
                 Button("로그인") {
                     Task {
-                        print("🔥🔥🔥")
-                        let response = await loginManager.authUser(userId, password)
-                        print(response ?? "User Authentication Failed")
-                        UserDefaults.standard.set(response?.token, forKey: "token")
+                        guard let response = await loginManager.authUser(userId, password)
+                        else {
+                            print("Login Failed.")
+                            return
+                        }
+                        print("🔥🔥🔥 Login Reponse: \(response)")
+                        UserDefaults.standard.set(response.token, forKey: "token")
+                        
+                        self.isLoggedIn = true
                     }
                 }
                 
             }// VStack
             .onAppear {
+                print("✅✅✅ Token in LoginView: \(token ?? "I have no Token")")
                 Task {
                     guard let token = token else {
                         print("Token does not exist.")
@@ -55,14 +61,14 @@ struct LoginView: View {
     }// body
 }// LoginView
 
-struct LoginView_Previews: PreviewProvider {
-    
-    @State static var value = false
-    
-    static var previews: some View {
-        LoginView(userId: "winwin01", password: "123123123", isLoggedIn: $value)
-    }
-}
+//struct LoginView_Previews: PreviewProvider {
+//
+//    @State static var value = false
+//
+//    static var previews: some View {
+//        LoginView(userId: "winwin01", password: "123123123", isLoggedIn: $value)
+//    }
+//}
 
 struct SecureTextToggleComponent: View {
     // State Variables
