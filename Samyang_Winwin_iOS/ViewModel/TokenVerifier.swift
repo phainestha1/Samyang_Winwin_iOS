@@ -8,10 +8,15 @@
 import Foundation
 
 struct TokenVerifier {
-    let token: String = ""
+    let token: String? = UserDefaults.standard.string(forKey: "token")
     let url: URL? = URL(string: "\(Constant.basicUrl)/user/token")
     
-    func tokenLogin(_ token: String) async -> UserModel? {
+    func tokenLogin() async -> UserModel? {
+        guard let token = token else {
+            print("No token is allowed in TokenVerifier, tokenLogin")
+            return nil
+        }
+        
         if let url = url {
             var request = URLRequest(url: url)
             request.setValue("Bearer \(token)", forHTTPHeaderField: "authorization")
@@ -36,7 +41,7 @@ struct TokenVerifier {
                 return userModel
                 
             } catch {
-                print("✅✅✅ Token Login Failed: \(error)")
+                print("✅✅✅ Token Login Failed in TokenVerifier: \(error)")
             }
         }
         

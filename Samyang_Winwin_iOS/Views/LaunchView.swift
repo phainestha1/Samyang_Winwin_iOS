@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct LaunchView: View {
-    
-    @State var isLoggedIn: Bool = false
-    
-    init() {
-        print("✅ isLoggedIn in LaunchView: \(isLoggedIn)")
-    }
-    
+
+    @StateObject var autoLoginManger: AutoLoginManager = AutoLoginManager()
+        
     var body: some View {
-        switch isLoggedIn {
+        switch autoLoginManger.isLoggedIn {
         case true:
             MainView()
+                .environmentObject(autoLoginManger)
         case false:
-            LoginView(isLoggedIn: $isLoggedIn)
+            LoginView()
         }
     }// body
 }// LaunchView

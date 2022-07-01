@@ -12,8 +12,8 @@ struct LoginView: View {
     @State var userId: String = ""
     @State var password: String = ""
     @State var isSecure: Bool = true
-    @Binding var isLoggedIn: Bool
     
+    // Variables
     let loginManager: LoginManager = LoginManager()
     let tokenVerifier: TokenVerifier = TokenVerifier()
     var token: String? = UserDefaults.standard.string(forKey: "token")
@@ -34,67 +34,17 @@ struct LoginView: View {
                         }
                         print("🔥🔥🔥 Login Reponse: \(response)")
                         UserDefaults.standard.set(response.token, forKey: "token")
-                        
-                        self.isLoggedIn = true
                     }
                 }
                 
             }// VStack
-            .onAppear {
-                print("✅✅✅ Token in LoginView: \(token ?? "I have no Token")")
-                Task {
-                    guard let token = token else {
-                        print("Token does not exist.")
-                        return
-                    }
-                    
-                    if let _ = await tokenVerifier.tokenLogin(token) {
-                        self.isLoggedIn = true
-                    } else {
-                        print("Token exists, but verification process failed.")
-                    }
-                    
-                }
-            }
             
         }// NavigationView
     }// body
 }// LoginView
 
-//struct LoginView_Previews: PreviewProvider {
-//
-//    @State static var value = false
-//
-//    static var previews: some View {
-//        LoginView(userId: "winwin01", password: "123123123", isLoggedIn: $value)
-//    }
-//}
-
-struct SecureTextToggleComponent: View {
-    // State Variables
-    @Binding var password: String
-    @Binding var isSecure: Bool
-    
-    var body: some View {
-        switch isSecure {
-        case true:
-            HStack {
-                SecureField("비밀번호", text: $password)
-                Spacer()
-                Button("Click Me!") {
-                    self.isSecure.toggle()
-                }
-            }
-            
-        case false:
-            HStack {
-                TextField("비밀번호", text: $password)
-                Spacer()
-                Button("Click Me!") {
-                    self.isSecure.toggle()
-                }
-            }
-        }
-        
-    }// body
-}// PasswordComponent
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView(userId: "winwin01", password: "123123123")
+    }
+}

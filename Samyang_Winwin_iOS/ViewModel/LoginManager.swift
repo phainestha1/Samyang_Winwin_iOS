@@ -31,7 +31,7 @@ struct LoginManager {
                 let decodedData = try JSONDecoder().decode(UserModel.self, from: data)
                 return decodedData
             } catch {
-                print("authUser Process Failed, \(error)")
+                print("✅✅✅ authUser Process Failed, \(error)")
             }
         }
         
